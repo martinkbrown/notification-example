@@ -28,22 +28,23 @@ public class NotificationExampleActivity extends Activity {
             public void onClick(View v) {
                 NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                Notification notification = new Notification(R.drawable.ic_launcher,
-                        "Hi there",
-                        System.currentTimeMillis());
-
-                CharSequence contentTitle = "You have been notified";
-                CharSequence contentText = "Click to launch second activity ...";
                 Intent notificationIntent = new Intent(getApplicationContext(), SecondActivity.class);
                 PendingIntent contentIntent = PendingIntent.getActivity(
                         getApplicationContext(),
                         0,
                         notificationIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
-
-                notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText, contentIntent);
-
-                notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONLY_ALERT_ONCE;
+                
+                Notification notification = new Notification.Builder(getApplicationContext())
+                	.setSmallIcon(R.drawable.ic_launcher)
+                	.setTicker("Hi there")
+                	.setWhen(System.currentTimeMillis())
+                	.setContentTitle("You have been notified")
+                	.setContentText("Click to launch second activity ...")
+                	.setContentIntent(contentIntent)
+                	.setAutoCancel(true)
+                	.setOnlyAlertOnce(true)
+                	.build();
 
                 nm.notify(1, notification);
             }
